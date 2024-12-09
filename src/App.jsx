@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import Board from "./components/Board";
+import WinnerModal from "./components/WinnerModal";
 
 const cardIcons = [
-  "👽",
-	"🤡",
-  "🍎",
-	"😁",
-	"😛",
-	"😅",
-	"🐭",
-	"🤣",
+	"👽",
+	// "🤡",
+	// "🍎",
+	// "😁",
+	// "😛",
+	// "😅",
+	// "🐭",
+	// "🤣",
 	// "😊",
 	// "😇",
 	// "🙂",
@@ -26,13 +27,15 @@ const cardIcons = [
 	// "📱", "💻", "🖥️", "🖨️", "🖱️", "🎧", "🕹️", "📷", "🎥", "📺"
 ];
 
+
 function App() {
 	const [shuffledCards, setShuffledCards] = useState([]);
 	const [selectedCard, setSelectedCard] = useState(null);
 	const [animating, setAnimating] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+  
 
-	useEffect(() => {
+	const initializeGame = () => {
 		const shuffledIconList = shuffleIcons([...cardIcons, ...cardIcons]);
 		setShuffledCards(
 			shuffledIconList.map((emoji, i) => ({
@@ -41,15 +44,23 @@ function App() {
 				flipped: false,
 			}))
 		);
+		setSelectedCard(null);
+		setAnimating(false);
+		setShowModal(false);
+	};
+
+	useEffect(() => {
+		initializeGame();
 	}, []);
 
-  useEffect(() => {
-    const allFlipped = shuffledCards.every((card) => card.flipped);
-    if (allFlipped) {
-      setShowModal(true);
-    }
-  }, [shuffledCards]);
-  
+	useEffect(() => {
+		if (
+			shuffledCards.length > 0 &&
+			shuffledCards.every((card) => card.flipped)
+		) {
+			setShowModal(true);
+		}
+	}, [shuffledCards]);
 
 	const shuffleIcons = (a) => {
 		for (let i = a.length - 1; i > 0; i--) {
@@ -88,6 +99,11 @@ function App() {
 				memoCards={shuffledCards}
 				animating={animating}
 			/>
+			 <WinnerModal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        onRestart={initializeGame}
+      />
 		</div>
 	);
 }
