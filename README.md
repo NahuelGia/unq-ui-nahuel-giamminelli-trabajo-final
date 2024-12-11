@@ -7,7 +7,7 @@ git clone https://github.com/NahuelGia/unq-ui-nahuel-giamminelli-trabajo-final.g
 cd unq-ui-nahuel-giamminelli-trabajo-final
 ```
 
-2. **Instalamos dependencias:**
+2. **Instalar dependencias:**
 
 En la raiz del proyecto instalar las dependencias con el siguiente comando:
 
